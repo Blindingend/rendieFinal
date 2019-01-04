@@ -90,7 +90,29 @@
          10.0.0.1         Ready     controlplane,etcd,worker   35m       v1.10.3-rancher1
          ```
 
-   至此我们完成了搭建工作，可以用 kubectl 控制我们的集群了。接下来就可以开始部署工作了。
+   至此我们完成了搭建工作，可以用 kubectl 控制我们的集群了。接下来我们开始创建 dashboard，来实现图形化的监控。
 
 
+
+
+
+   ### kubectl dashboard 的创建
+
+   1. 准备对应的 yaml 文件. 
+
+      *我的这个是魔改的，已经修改过镜像地址和权限了。推荐找官方的。*
+
+   2. 将 yaml 里的镜像地址更改成阿里云的
+
+   3. 运行 `kubectl create -f xx.yaml` 来创建 dashboard
+
+   之后查看 dashboard 的方法有很多，推荐看官方的。比较简单的是用 `kubectl proxy`
+
+   `kubectl proxy --address=0.0.0.0 --accept-hosts=".*"`可以让你在其他地方访问你的dashboard 而不一定要在 kubernetes 本机
+
+   我找到的这份魔改的 yaml 可以直接在 ip:30090 访问 dashboard，比较简单。创建成功之后我们访问 dashboard 发现一片飘黄，这是因为权限不够。
+
+   接下来就需要参照[更改 k8s dashboard 权限](https://blog.csdn.net/java_zyq/article/details/82178152) 这篇文章里说的更改 yaml 文件（你可以改好再创建，但是可以先创建看看是不是可以创建成功）
+
+   ​	然后用`kubectl delete -f xx.yaml` 命令删除刚刚权限不够的 dashboard ，再重新创建一次，这个时候应该就好了。
 
